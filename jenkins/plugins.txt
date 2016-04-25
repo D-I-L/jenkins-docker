@@ -1,0 +1,4 @@
+credentials:1.27
+cobertura:1.9.7
+git:2.4.4
+

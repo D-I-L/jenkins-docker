@@ -1,0 +1,49 @@
+version: '2'
+services:
+  jenkins:
+    restart: always
+    build: ./jenkins
+#   image: jenkins:latest
+    volumes_from:
+      - jenkins_data
+    ports:
+      - "8080:8080"
+    links:
+      - postgres:postgres
+      - elasticsearch:elasticsearch
+
+  jenkins_data:
+    image: jenkins:latest
+    volumes:
+      - /var/jenkins_home
+    command: echo "jenkins data volume"
+
+  postgres:
+    restart: always
+    image: postgres:latest
+    volumes_from:
+      - data
+    environment:
+      POSTGRES_USER: webuser
+      POSTGRES_PASSWORD: webuser
+      POSTGRES_DB: pydgin_authdb
+
+  data:
+    image: postgres:latest
+    volumes:
+      - /var/lib/postgresql
+    command: echo "postgres data volume"
+
+  elasticsearch:
+    restart: always
+    image: elasticsearch:2.2.0
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+    environment:
+      - ES_HEAP_SIZE=1g
+    volumes:
+      - ./elasticsearch/config:/usr/share/elasticsearch/config 
+    user: elasticsearch
+
