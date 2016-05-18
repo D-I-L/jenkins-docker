@@ -11,6 +11,8 @@ services:
     links:
       - postgres:postgres
       - elasticsearch:elasticsearch
+    external_links:
+      - pydgindocker_elasticsearch_1:pydgin_elasticsearch
 
   jenkins_data:
     image: jenkins:latest
@@ -42,8 +44,12 @@ services:
     ulimits:
       memlock: -1
     environment:
-      - ES_HEAP_SIZE=1g
+      - ES_HEAP_SIZE=500m
     volumes:
       - ./elasticsearch/config:/usr/share/elasticsearch/config 
     user: elasticsearch
 
+networks:
+  default:
+    external:
+      name: pydgindocker_default
