@@ -13,6 +13,9 @@ services:
       - elasticsearch:elasticsearch
     external_links:
       - pydgindocker_elasticsearch_1:pydgin_elasticsearch
+    environment:
+      - JAVA_OPTS=-Duser.timezone=Europe/London
+      - TZ=Europe/London
 
   jenkins_data:
     image: jenkins:latest
